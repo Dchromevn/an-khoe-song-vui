@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ăn đúng - Sống khỏe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .screen {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #4CAF50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8glichkeiten8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #2196F3;
+        }
+        
+        .btn-secondary:hover {
+            background: #1976D2;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+        
+        .btn-outline:hover {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .goal-card {
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .goal-card:hover, .goal-card.selected {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+            transform: translateY(-5px);
+        }
+        
+        .goal-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .meal-card {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            background: white;
+            margin-bottom: 15px;
+        }
+        
+        .meal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .meal-image {
+            width: 100%;
+            height: 120px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Đảm bảo ảnh không tràn ra ngoài */
+        }
+
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Đảm bảo ảnh vừa khung mà không bị méo */
+        }
+        
+        .meal-info {
+            padding: 15px;
+        }
+        
+        .meal-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .nutrition-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .nutrition-item {
+            text-align: center;
+        }
+        
+        .nutrition-item .value {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .nutrition-item .label {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .daily-menu {
+            display: grid;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .meal-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .meal-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .swap-btn {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        .swap-btn:hover {
+            background: #F57C00;
+        }
+        
+        .total-nutrition {
+            background: #E8F5E8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .total-nutrition h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            background: #ddd;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: #4CAF50;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .recipe-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .recipe-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .ingredients-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .ingredients-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .steps-list {
+            margin: 15px 0;
+        }
+        
+        .steps-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .profile-summary {
+            background: #E3F2FD;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-summary h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+        
+        .back-btn {
+            background: #666;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #555;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .recommended-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="screen active" id="welcome-screen">
+            <div class="logo">
+                <h1>🍃 Ăn đúng - Sống khỏe</h1>
+                <p>Ứng dụng dinh dưỡng thông minh cá nhân hóa</p>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn" onclick="showScreen('login-screen')">Đăng nhập</button>
+                <button class="btn btn-secondary" onclick="showScreen('profile-screen')">Đăng ký miễn phí</button>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="color: #666;">Đăng nhập bằng:</p>
+                <button class="btn btn-outline" style="margin: 10px;">📧 Google</button>
+                <button class="btn btn-outline" style="margin: 10px;">🍎 Apple ID</button>
+            </div>
+        </div>
+
+        <div class="screen" id="login-screen">
+            <button class="btn back-btn" onclick="showScreen('welcome-screen')">← Quay lại</button>
+            <div class="logo">
+                <h1>🍃 Đăng nhập</h1>
+                <p>Chào mừng trở lại!</p>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="login-email" placeholder="Nhập email của bạn">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu:</label>
+                <input type="password" id="login-password" placeholder="Nhập mật khẩu">
+            </div>
+            <div style="text-align: center;">
+                <button class="btn" onclick="login()">Đăng nhập</button>
+                <p style="margin-top: 15px;"><a href="#" style="color: #4CAF50;">Quên mật khẩu?</a></p>
+            </div>
+        </div>
+
+        <div class="screen" id="profile-screen">
+            <button class="btn back-btn" onclick="showScreen('welcome-screen')">← Quay lại</button>
+            <div class="logo">
+                <h1>🏥 Thiết lập hồ sơ sức khỏe</h1>
+                <p>Giúp chúng tôi tạo thực đơn phù hợp với bạn</p>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Giới tính:</label>
+                    <select id="gender">
+                        <option value="male">Nam</option>
+                        <option value="female">Nữ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tuổi:</label>
+                    <input type="number" id="age"  min="10" max="100">
+                </div>
+                <div class="form-group">
+                    <label>Chiều cao (cm):</label>
+                    <input type="number" id="height"  min="100" max="250">
+                </div>
+                <div class="form-group">
+                    <label>Cân nặng (kg):</label>
+                    <input type="number" id="weight"  min="30" max="200">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Tình trạng sức khỏe:</label>
+                <select id="health-condition">
+                    <option value="normal">Bình thường</option>
+                    <option value="hypertension">Cao huyết áp</option>
+                    <option value="diabetes">Tiểu đường</option>
+                    <option value="gout">Bệnh gout</option>
+                    <option value="heart">Bệnh tim</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Mức độ vận động:</label>
+                <select id="activity-level">
+                    <option value="sedentary">Ít vận động (công việc văn phòng)</option>
+                    <option value="light">Vận động nhẹ (1-3 ngày/tuần)</option>
+                    <option value="moderate">Vận động vừa (3-5 ngày/tuần)</option>
+                    <option value="active">Vận động nhiều (6-7 ngày/tuần)</option>
+                </select>
+            </div>
+
+            <label style="font-weight: bold; display: block; margin: 20px 0 15px 0;">Mục tiêu cá nhân:</label>
+            <div class="goals-grid">
+                <div class="goal-card" onclick="selectGoal(this, 'muscle')">
+                    <div class="icon">🏋️</div>
+                    <div>Tăng cơ</div>
+                </div>
+                <div class="goal-card" onclick="selectGoal(this, 'weight-loss')">
+                    <div class="icon">⚖️</div>
+                    <div>Giảm cân</div>
+                </div>
+                <div class="goal-card" onclick="selectGoal(this, 'maintain')">
+                    <div class="icon">🍃</div>
+                    <div>Giữ sức khỏe</div>
+                </div>
+                <div class="goal-card" onclick="selectGoal(this, 'vegetarian')">
+                    <div class="icon">🌱</div>
+                    <div>Ăn chay</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="saveProfile()">Tiếp tục → Tạo thực đơn</button>
+            </div>
+        </div>
+
+        <div class="screen" id="menu-screen">
+            <div class="profile-summary" id="profile-summary">
+                </div>
+
+            <div class="logo">
+                <h1>🍽️ Thực đơn hôm nay</h1>
+                <p>Được tối ưu hóa cho mục tiêu của bạn</p>
+            </div>
+            
+            <div class="total-nutrition" id="total-nutrition">
+                <h3>📊 Tổng dinh dưỡng trong ngày</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div>
+                        <strong>Calo: <span id="total-calories">0</span>/<span id="target-calories">0</span></strong>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="calories-progress"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Protein: <span id="total-protein">0</span>g/<span id="target-protein">0</span>g</strong>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="protein-progress"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Carbs: <span id="total-carbs">0</span>g/<span id="target-carbs">0</span>g</strong>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="carbs-progress"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Chất béo: <span id="total-fat">0</span>g/<span id="target-fat">0</span>g</strong>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="fat-progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="daily-menu">
+                <div class="meal-section">
+                    <h3>🌅 Bữa sáng <button class="swap-btn" onclick="swapMeal('breakfast')">🔁 Đổi món</button></h3>
+                    <div id="breakfast-meals"></div>
+                </div>
+                
+                <div class="meal-section">
+                    <h3>☀️ Bữa trưa <button class="swap-btn" onclick="swapMeal('lunch')">🔁 Đổi món</button></h3>
+                    <div id="lunch-meals"></div>
+                </div>
+                
+                <div class="meal-section">
+                    <h3>🌙 Bữa tối <button class="swap-btn" onclick="swapMeal('dinner')">🔁 Đổi món</button></h3>
+                    <div id="dinner-meals"></div>
+                </div>
+                
+                <div class="meal-section">
+                    <h3>🍎 Ăn phụ <button class="swap-btn" onclick="swapMeal('snack')">🔁 Đổi món</button></h3>
+                    <div id="snack-meals"></div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="showScreen('profile-screen')">⚙️ Chỉnh sửa hồ sơ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="recipe-modal" id="recipe-modal">
+        <div class="recipe-content">
+            <span class="close-btn" onclick="closeRecipe()">&times;</span>
+            <div id="recipe-details"></div>
+        </div>
+    </div>
+
+    <script>
+        // User profile data
+        let userProfile = {
+            gender: 'male',
+            age: 25,
+            height: 170,
+            weight: 65,
+            healthCondition: 'normal',
+            activityLevel: 'moderate',
+            goal: 'maintain'
+        };
+
+        // Current daily menu
+        let dailyMenu = {
+            breakfast: [],
+            lunch: [],
+            dinner: [],
+            snack: []
+        };
+
+        // 15 món ăn Việt Nam
+        const meals = [
+            // Breakfast
+            {
+                id: 1, name: "Phở bò", emoji: "🍜", category: "breakfast",
+                calories: 550, protein: 35, carbs: 60, 
+                fat: 20, ingredients: ["500g thịt bò", "200g bánh phở", "Hành tây", "Gia vị phở", "Rau thơm"],
+                steps: ["Ninh xương bò 2-3 tiếng", "Thái thịt bò mỏng", "Trần bánh phở", "Múc nước dùng", "Thêm thịt và rau thơm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/pho-bo.jpg"
+            },
+            {
+                id: 2, name: "Bánh mì trứng ốp la", emoji: "🥖🍳", category: "breakfast",
+                calories: 400, protein: 22, carbs: 45, 
+                fat: 16, ingredients: ["Bánh mì", "Trứng", "Pate", "Rau thơm", "Tương ớt"],
+                steps: ["Ốp la trứng", "Cắt bánh mì", "Phết pate", "Cho trứng và rau", "Thưởng thức"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/banh-my-trung.jpg"
+            },
+            {
+                id: 3, name: "Cháo gà", emoji: "🍚", category: "breakfast",
+                calories: 320, protein: 25, carbs: 40, 
+                fat: 8, ingredients: ["Gà", "Gạo", "Gừng", "Hành lá", "Gia vị"],
+                steps: ["Ninh gà", "Nấu cháo", "Xé gà nhỏ", "Nêm nếm", "Rắc hành lá"],
+                suitable: ["normal", "diabetes", "hypertension", "lose-weight","maintain"], image_url: "img/chao-ga.jpg"
+            },
+            {
+                id: 4, name: "Bánh cuốn nhân thịt mộc nhĩ", emoji: "🥟", category: "breakfast",
+                calories: 300, protein: 15, carbs: 40, 
+                fat: 10, ingredients: ["Bột gạo", "Thịt heo", "Mộc nhĩ", "Hành tím", "Nước mắm"],
+                steps: ["Pha bột", "Xào nhân", "Tráng bánh", "Cuốn nhân", "Ăn kèm chả"],
+                suitable: ["normal", "lose-weight", "hypertension", "maintain"], image_url: "img/banh-cuon-nhan-thit.jpg"
+            },
+            {
+                id: 5, name: "Xôi gà xé", emoji: "🍱", category: "breakfast",
+                calories: 450, protein: 20, carbs: 70, 
+                fat: 12, ingredients: ["Gạo nếp", "Gà", "Lá chuối", "Muối", "Hành phi"],
+                steps: ["Nấu xôi", "Luộc gà", "Xé gà", "Rắc hành phi", "Bày biện"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/xoi-ga-xe.jpg"
+            },
+            {
+                id: 16, name: "Bún riêu cua", emoji: "🍜", category: "breakfast",
+                calories: 420, protein: 22, carbs: 45, 
+                fat: 18, ingredients: ["Bún", "Cua đồng", "Đậu phụ", "Cà chua", "Rau sống"],
+                steps: ["Giã cua lấy riêu", "Nấu nước dùng", "Thả đậu, cà chua", "Trần bún", "Bày biện với rau sống"],
+                suitable: ["normal", "lose-weight"], image_url: "img/bun-rieu-cua.jpg"
+            },
+            {
+                id: 17, name: "Miến gà", emoji: "🍲", category: "breakfast",
+                calories: 350, protein: 28, carbs: 35, 
+                fat: 10, ingredients: ["Miến dong", "Thịt gà", "Mộc nhĩ", "Hành phi", "Rau mùi"],
+                steps: ["Luộc gà, thái sợi", "Trần miến", "Nấu nước dùng gà", "Cho miến, gà, rau mùi", "Rắc hành phi"],
+                suitable: ["normal", "lose-weight", "muscle", "hypertension", "maintain"], image_url: "img/mien-ga.jpg"
+            },
+            {
+                id: 18, name: "Bánh mì chay", emoji: "🥖🥦", category: "breakfast",
+                calories: 300, protein: 12, carbs: 50, 
+                fat: 10, ingredients: ["Bánh mì", "Đậu phụ chiên", "Rau sống", "Dưa góp", "Nước tương"],
+                steps: ["Chiên đậu phụ", "Cắt bánh mì", "Cho đậu phụ, rau, dưa", "Rưới nước tương", "Thưởng thức"],
+                suitable: ["vegetarian", "lose-weight","maintain"], image_url: "img/banh-my-chay.jpg"
+            },
+            {
+                id: 19, name: "Cháo sườn", emoji: "🍚", category: "breakfast",
+                calories: 360, protein: 20, carbs: 45, 
+                fat: 12, ingredients: ["Sườn non", "Gạo", "Hành lá", "Quẩy", "Gia vị"],
+                steps: ["Ninh sườn", "Nấu cháo từ nước sườn", "Xé sườn cho vào cháo", "Rắc hành, ăn kèm quẩy"],
+                suitable: ["normal", "maintain"], image_url: "img/chao-suon.jpg"
+            },
+            {
+                id: 20, name: "Trứng luộc và rau củ luộc", emoji: "🥚🥕", category: "breakfast",
+                calories: 200, protein: 18, carbs: 12, 
+                fat: 10, ingredients: ["Trứng gà", "Bông cải xanh", "Cà rốt", "Gia vị"],
+                steps: ["Luộc trứng", "Luộc rau củ", "Trình bày"],
+                suitable: ["lose-weight", "muscle", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/trung-rau-cu-luoc.jpg"
+            },
+            {
+                id: 21, name: "Sữa chua không đường và hoa quả", emoji: "🥛🍓", category: "breakfast",
+                calories: 180, protein: 12, carbs: 30, 
+                fat: 3, ingredients: ["Sữa chua không đường", "Chuối", "Dâu tây", "Hạt chia"],
+                steps: ["Cắt hoa quả", "Trộn sữa chua với hoa quả và hạt chia"],
+                suitable: ["lose-weight", "vegetarian","maintain", "normal", "hypertension"], image_url: "img/sua-chua-hoa-qua.jpg"
+            },
+            {
+                id: 22, name: "Bún chả", emoji: "🍜", category: "breakfast",
+                calories: 450, protein: 30, carbs: 50, 
+                fat: 18, ingredients: ["Bún", "Thịt nướng", "Chả viên", "Nước chấm", "Rau sống"],
+                steps: ["Nướng thịt, chả", "Pha nước chấm", "Trần bún", "Bày biện với rau sống"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/bun-cha.jpg"
+            },
+            {
+                id: 23, name: "Ngô luộc", emoji: "🌽", category: "breakfast",
+                calories: 150, protein: 5, carbs: 30, 
+                fat: 1.5, ingredients: ["Ngô nếp"],
+                steps: ["Luộc ngô khoảng 20 phút"],
+                suitable: ["lose-weight", "vegetarian", "normal","maintain", "hypertension"], image_url: "img/ngo-luoc.jpg"
+            },
+            {
+                id: 24, name: "Bún thang", emoji: "🍜", category: "breakfast",
+                calories: 400, protein: 28, carbs: 40, 
+                fat: 12, ingredients: ["Bún", "Thịt gà", "Trứng", "Giò lụa", "Nấm hương", "Rau thơm"],
+                steps: ["Nấu nước dùng gà", "Thái sợi thịt gà, trứng, giò", "Trần bún", "Bày biện"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/bun-thang.jpg"
+            },
+            {
+                id: 25, name: "Khoai lang luộc", emoji: "🍠", category: "breakfast",
+                calories: 180, protein: 4, carbs: 40, 
+                fat: 1, ingredients: ["Khoai lang"],
+                steps: ["Rửa sạch khoai, luộc chín mềm"],
+                suitable: ["lose-weight", "vegetarian", "normal","maintain", "hypertension"], image_url: "img/khoai-luoc.jpg"
+            },
+            {
+                id: 26, name: "Nước ép rau củ", emoji: "🥤🥦", category: "breakfast",
+                calories: 100, protein: 3, carbs: 20, 
+                fat: 0.5, ingredients: ["Cần tây", "Dưa chuột", "Táo xanh", "Gừng"],
+                steps: ["Rửa sạch nguyên liệu, cho vào máy ép"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/nuoc-ep-trai-cay.jpg"
+            },
+            {
+                id: 27, name: "Sinh tố chuối yến mạch", emoji: "🥤🍌", category: "breakfast",
+                calories: 250, protein: 10, carbs: 45, 
+                fat: 6, ingredients: ["Chuối", "Yến mạch", "Sữa tươi không đường", "Mật ong"],
+                steps: ["Xay nhuyễn tất cả nguyên liệu"],
+                suitable: ["muscle", "lose-weight", "vegetarian", "maintain", "normal", "hypertension"], image_url: "img/sinh-to-chuoi.jpg"
+            },
+            {
+                id: 28, name: "Phở cuốn", emoji: "🥢", category: "breakfast",
+                calories: 320, protein: 20, carbs: 35, 
+                fat: 14, ingredients: ["Bánh phở tươi", "Thịt bò luộc", "Rau thơm", "Nước chấm chua ngọt"],
+                steps: ["Cuốn thịt bò và rau vào bánh phở", "Chấm nước mắm"],
+                suitable: ["normal", "lose-weight", "maintain"], image_url: "img/pho-cuon.jpg"
+            },
+            {
+                id: 29, name: "Bún mọc", emoji: "🍜", category: "breakfast",
+                calories: 400, protein: 28, carbs: 42, 
+                fat: 15, ingredients: ["Bún", "Mọc (chả sống)", "Sườn non", "Nấm hương", "Rau thơm"],
+                steps: ["Ninh sườn lấy nước dùng", "Thả mọc, nấm vào nấu chín", "Trần bún", "Bày biện"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/bun-moc.jpg"
+            },
+            {
+                id: 30, name: "Bánh tráng cuốn thịt heo", emoji: "🥢", category: "breakfast",
+                calories: 350, protein: 22, carbs: 40, 
+                fat: 15, ingredients: ["Thịt heo luộc", "Bánh tráng", "Rau sống", "Dứa", "Nước chấm mắm nêm"],
+                steps: ["Cuốn thịt, rau, dứa vào bánh tráng", "Chấm mắm nêm"],
+                suitable: ["normal", "lose-weight", "maintain"], image_url: "img/banh-trang-cuon-thit.jpg"
+            },
+
+            // Lunch
+            {
+                id: 6, name: "Cơm gà xé phay", emoji: "🍛", category: "lunch",
+                calories: 650, protein: 40, carbs: 75, 
+                fat: 20, ingredients: ["Gà", "Gạo", "Gừng", "Dưa leo", "Nước mắm gừng"],
+                steps: ["Luộc gà, xé phay", "Nấu cơm", "Trộn gà với gỏi", "Bày biện"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/com-ga-xe-phay.jpg"
+            },
+            {
+                id: 7, name: "Bún bò Huế", emoji: "🍜", category: "lunch",
+                calories: 500, protein: 35, carbs: 55, 
+                fat: 18, ingredients: ["Bún", "Thịt bò", "Chả", "Sả ớt", "Rau thơm"],
+                steps: ["Ninh xương", "Xào sả ớt", "Nấu nước dùng", "Trần bún", "Bày biện"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/bun-bo-hue.jpg"
+            },
+            {
+                id: 8, name: "Salad rau củ quả ức gà", emoji: "🥗", category: "lunch",
+                calories: 320, protein: 28, carbs: 25, 
+                fat: 15, ingredients: ["Xà lách", "Cà chua", "Dưa leo", "Ức gà luộc/áp chảo", "Dầu olive", "Giấm táo"],
+                steps: ["Rửa rau, thái củ", "Thái ức gà", "Trộn đều với dầu olive và giấm táo"],
+                suitable: ["weight-loss", "muscle", "diabetes", "hypertension", "normal", "maintain"], image_url: "img/salad-rau-cu-ga.jpg"
+            },
+            {
+                id: 9, name: "Cà ri gà nước cốt dừa", emoji: "🍛", category: "lunch",
+                calories: 600, protein: 45, carbs: 25, 
+                fat: 35, ingredients: ["Gà", "Nước cốt dừa", "Bột cà ri", "Khoai tây", "Cà rốt"],
+                steps: ["Thái gà, ướp cà ri", "Xào thơm", "Đổ nước cốt dừa, khoai, cà rốt", "Ninh mềm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/ca-ri-ga.jpg"
+            },
+            {
+                id: 10, name: "Mì Quảng gà/tôm", emoji: "🍜", category: "lunch",
+                calories: 480, protein: 28, carbs: 60, 
+                fat: 15, ingredients: ["Mì Quảng", "Tôm thịt", "Trứng cút", "Bánh tráng", "Lạc rang"],
+                steps: ["Nấu nước dùng", "Luộc mì", "Xào tôm thịt", "Bày biện", "Rắc lạc"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/mi-quang.jpg"
+            },
+            {
+                id: 31, name: "Cơm tấm sườn bì chả", emoji: "🍚🍖", category: "lunch",
+                calories: 700, protein: 45, carbs: 80, 
+                fat: 25, ingredients: ["Cơm tấm", "Sườn nướng", "Bì", "Chả trứng", "Dưa leo", "Nước mắm"],
+                steps: ["Nướng sườn", "Hấp chả", "Bày cơm, sườn, bì, chả", "Ăn kèm dưa leo và nước mắm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/com-tam-suon-bi.jpg"
+            },
+            {
+                id: 32, name: "Bún đậu mắm tôm", emoji: "🍜", category: "lunch",
+                calories: 580, protein: 32, carbs: 50, 
+                fat: 28, ingredients: ["Bún lá", "Đậu phụ rán", "Chả cốm", "Thịt luộc", "Mắm tôm", "Rau sống"],
+                steps: ["Rán đậu, chả cốm", "Luộc thịt", "Pha mắm tôm", "Bày biện"],
+                suitable: ["normal", "maintain"], image_url: "img/bun-dau-mam-tom.jpg"
+            },
+            {
+                id: 33, name: "Gỏi cuốn chay", emoji: "🥢", category: "lunch",
+                calories: 250, protein: 10, carbs: 35, 
+                fat: 8, ingredients: ["Bánh tráng", "Đậu phụ", "Rau xà lách", "Bún", "Nước tương đậu phộng"],
+                steps: ["Cuốn đậu phụ, rau, bún vào bánh tráng", "Chấm nước tương"],
+                suitable: ["vegetarian", "lose-weight", "normal", "hypertension", "maintain"], image_url: "img/goi-cuon-chay.jpg"
+            },
+            {
+                id: 34, name: "Phở xào giòn", emoji: "🍝", category: "lunch",
+                calories: 550, protein: 35, carbs: 55, 
+                fat: 25, ingredients: ["Phở khô", "Thịt bò/gà", "Rau cải", "Cà rốt", "Gia vị"],
+                steps: ["Chiên phở giòn", "Xào thịt và rau củ", "Trộn đều hoặc đổ lên phở"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/pho-xao-gion.jpg"
+            },
+            {
+                id: 35, name: "Cơm chiên hải sản", emoji: "🍚🍤", category: "lunch",
+                calories: 620, protein: 35, carbs: 65, 
+                fat: 28, ingredients: ["Cơm nguội", "Tôm", "Mực", "Trứng", "Rau củ", "Nước mắm"],
+                steps: ["Xào tôm, mực, rau củ", "Cho cơm vào chiên", "Đập trứng, nêm gia vị"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/com-chien-hai-san.jpg"
+            },
+            {
+                id: 36, name: "Canh bí đao nấu tôm", emoji: "🍲🍤", category: "lunch",
+                calories: 280, protein: 22, carbs: 25, 
+                fat: 10, ingredients: ["Bí đao", "Tôm tươi", "Hành lá", "Gia vị"],
+                steps: ["Sơ chế tôm, ướp gia vị", "Nấu canh bí đao", "Cho tôm vào nấu chín", "Rắc hành lá"],
+                suitable: ["lose-weight", "normal", "hypertension", "maintain"], image_url: "img/canh-bi-nau-tom.jpg"
+            },
+            {
+                id: 37, name: "Thịt luộc chấm mắm tép", emoji: "🍖🌶️", category: "lunch",
+                calories: 400, protein: 35, carbs: 8, 
+                fat: 25, ingredients: ["Thịt ba chỉ luộc", "Mắm tép chưng", "Dưa chuột", "Rau sống"],
+                steps: ["Luộc thịt, thái lát", "Pha mắm tép", "Bày biện"],
+                suitable: ["normal", "maintain"], image_url: "img/thit-luoc-mam-tep.jpg"
+            },
+            {
+                id: 38, name: "Đậu phụ sốt cà chua", emoji: "🍲", category: "lunch",
+                calories: 320, protein: 18, carbs: 30, 
+                fat: 18, ingredients: ["Đậu phụ", "Cà chua", "Hành lá", "Gia vị"],
+                steps: ["Rán đậu phụ", "Phi hành, xào cà chua", "Cho đậu phụ vào, nêm nếm"],
+                suitable: ["vegetarian", "normal", "hypertension", "maintain"], image_url: "img/dau-sot-ca.jpg"
+            },
+            {
+                id: 39, name: "Bò lúc lắc", emoji: "🥩", category: "lunch",
+                calories: 550, protein: 40, carbs: 25, 
+                fat: 35, ingredients: ["Thịt bò", "Hành tây", "Ớt chuông", "Nước tương", "Bơ"],
+                steps: ["Thái thịt bò vuông", "Xào thịt bò với hành tây, ớt chuông", "Nêm nếm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/bo-luc-lac.jpg"
+            },
+            {
+                id: 40, name: "Canh rau ngót thịt băm", emoji: "🍲🥬", category: "lunch",
+                calories: 250, protein: 18, carbs: 12, 
+                fat: 10, ingredients: ["Rau ngót", "Thịt băm", "Gia vị"],
+                steps: ["Phi hành, xào thịt băm", "Cho nước vào đun sôi", "Thả rau ngót, nêm nếm"],
+                suitable: ["lose-weight", "normal", "hypertension", "maintain"], image_url: "img/canh-rau-ngot.jpg"
+            },
+            {
+                id: 41, name: "Bún chả giò", emoji: "🍜", category: "lunch",
+                calories: 500, protein: 22, carbs: 55, 
+                fat: 22, ingredients: ["Bún", "Chả giò (nem rán)", "Rau sống", "Nước chấm chua ngọt"],
+                steps: ["Rán chả giò", "Trần bún", "Bày biện với rau sống và nước chấm"],
+                suitable: ["normal", "maintain"], image_url: "img/bun-cha-gio.jpg"
+            },
+            {
+                id: 42, name: "Cơm gạo lứt ức gà nướng và rau luộc", emoji: "🍚🍗🥦", category: "lunch",
+                calories: 500, protein: 45, carbs: 45, 
+                fat: 12, ingredients: ["Gạo lứt", "Ức gà", "Bông cải xanh", "Đậu que"],
+                steps: ["Nấu cơm gạo lứt", "Nướng ức gà", "Luộc rau củ", "Bày biện"],
+                suitable: ["lose-weight", "muscle", "normal", "hypertension", "maintain"], image_url: "img/com-gao-lut.jpg"
+            },
+            {
+                id: 43, name: "Cơm sườn nướng", emoji: "🍚🍖", category: "lunch",
+                calories: 600, protein: 40, carbs: 65, 
+                fat: 25, ingredients: ["Cơm trắng", "Sườn cốt lết", "Nước ướp sườn", "Dưa chuột"],
+                steps: ["Ướp sườn, nướng chín", "Nấu cơm", "Bày biện sườn với cơm và dưa chuột"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/com-suon-nuong.jpg"
+            },
+            {
+                id: 44, name: "Phở trộn gà", emoji: "🍜🥗", category: "lunch",
+                calories: 420, protein: 28, carbs: 45, 
+                fat: 15, ingredients: ["Bánh phở", "Thịt gà xé", "Lạc rang", "Rau thơm", "Nước trộn chua ngọt"],
+                steps: ["Trần phở", "Trộn phở với gà, rau thơm, lạc", "Rưới nước trộn"],
+                suitable: ["normal", "lose-weight", "maintain"], image_url: "img/pho-tron-ga.jpg"
+            },
+            {
+                id: 45, name: "Món xào thập cẩm chay", emoji: "🥦🥕", category: "lunch",
+                calories: 350, protein: 12, carbs: 35, 
+                fat: 18, ingredients: ["Bông cải", "Cà rốt", "Nấm", "Đậu Hà Lan", "Đậu phụ", "Nước tương"],
+                steps: ["Sơ chế rau củ, đậu phụ", "Xào chín tới tất cả nguyên liệu", "Nêm nếm"],
+                suitable: ["vegetarian", "lose-weight", "normal", "hypertension", "maintain"], image_url: "img/xao-chay.jpg"
+            },
+
+            // Dinner
+            {
+                id: 11, name: "Canh chua cá lóc", emoji: "🍲", category: "dinner",
+                calories: 250, protein: 30, carbs: 15, 
+                fat: 10, ingredients: ["Cá lóc", "Dứa", "Đậu bắp", "Cà chua", "Me chua", "Rau thơm"],
+                steps: ["Thái cá, ướp gia vị", "Nấu nước me", "Cho cà chua, dứa, đậu bắp", "Thêm cá", "Cho rau thơm"],
+                suitable: ["normal", "weight-loss", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/canh-chua-ca-loc.jpg"
+            },
+            {
+                id: 12, name: "Thịt kho tàu trứng cút", emoji: "🍖🥚", category: "dinner",
+                calories: 480, protein: 38, carbs: 10, 
+                fat: 32, ingredients: ["Thịt ba chỉ", "Trứng cút", "Nước mắm", "Đường phèn", "Tiêu"],
+                steps: ["Cắt thịt, luộc trứng", "Làm nước màu", "Kho thịt và trứng", "Om lửa nhỏ"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/thit-kho-tau-trung.jpg"
+            },
+            {
+                id: 13, name: "Bánh xèo miền Tây", emoji: "🥞", category: "dinner",
+                calories: 420, protein: 20, carbs: 48, 
+                fat: 18, ingredients: ["Bột bánh xèo", "Tôm thịt", "Giá đỗ", "Hành lá", "Rau sống"],
+                steps: ["Pha bột", "Xào nhân", "Đổ bột vào chảo", "Cho nhân", "Gấp đôi, ăn kèm rau sống"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/banh-xeo-mien-tay.jpg"
+            },
+            {
+                id: 46, name: "Cá diêu hồng hấp xì dầu", emoji: "🐟", category: "dinner",
+                calories: 280, protein: 35, carbs: 12, 
+                fat: 12, ingredients: ["Cá diêu hồng", "Gừng", "Hành lá", "Xì dầu", "Dầu mè"],
+                steps: ["Sơ chế cá", "Hấp cá với gừng, hành", "Pha nước sốt xì dầu, rưới lên cá"],
+                suitable: ["lose-weight", "normal", "muscle", "hypertension", "maintain"], image_url: "img/ca-hap-xi-dau.jpg"
+            },
+            {
+                id: 47, name: "Gà kho gừng", emoji: "🍗🌶️", category: "dinner",
+                calories: 420, protein: 35, carbs: 18, 
+                fat: 22, ingredients: ["Thịt gà", "Gừng", "Nước mắm", "Đường", "Tiêu"],
+                steps: ["Ướp gà với gia vị, gừng", "Kho gà đến khi thịt săn lại, nước keo"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/ga-kho.jpg"
+            },
+            {
+                id: 48, name: "Rau muống luộc chấm tương", emoji: "🥬🍚", category: "dinner",
+                calories: 180, protein: 6, carbs: 18, 
+                fat: 10, ingredients: ["Rau muống", "Tương", "Ớt", "Tỏi"],
+                steps: ["Luộc rau muống", "Pha tương với ớt, tỏi"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension",], image_url: "img/rau-muong-cham-tuong.jpg"
+            },
+            {
+                id: 49, name: "Đậu phụ Tứ Xuyên chay", emoji: "🌶️🍲", category: "dinner",
+                calories: 350, protein: 20, carbs: 25, 
+                fat: 22, ingredients: ["Đậu phụ non", "Nấm hương", "Đậu Hà Lan", "Sốt Tứ Xuyên chay"],
+                steps: ["Cắt đậu phụ, nấm", "Xào các nguyên liệu với sốt Tứ Xuyên", "Nêm nếm"],
+                suitable: ["vegetarian", "normal", "maintain"], image_url: "img/dau-sot-tu-xuyen.jpg"
+            },
+            {
+                id: 50, name: "Súp bí đỏ thịt băm", emoji: "🥣🎃", category: "dinner",
+                calories: 280, protein: 18, carbs: 30, 
+                fat: 12, ingredients: ["Bí đỏ", "Thịt băm", "Sữa tươi không đường", "Hành ngò"],
+                steps: ["Luộc bí đỏ, xay nhuyễn", "Xào thịt băm", "Cho bí đỏ, sữa vào nấu súp", "Nêm gia vị"],
+                suitable: ["lose-weight", "normal", "hypertension", "maintain"], image_url: "img/sup-bi-do-thit.jpg"
+            },
+            {
+                id: 51, name: "Tôm rim thịt", emoji: "🍤🍖", category: "dinner",
+                calories: 400, protein: 28, carbs: 12, 
+                fat: 25, ingredients: ["Tôm tươi", "Thịt ba chỉ", "Nước mắm", "Đường", "Hành tím"],
+                steps: ["Ướp tôm thịt", "Rim đến khi nước keo, tôm thịt thấm gia vị"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/tom-rim-thit.jpg"
+            },
+            {
+                id: 52, name: "Rau củ luộc chấm kho quẹt", emoji: "🥬🍚", category: "dinner",
+                calories: 350, protein: 12, carbs: 25, 
+                fat: 22, ingredients: ["Rau củ", "Thịt ba chỉ", "Tôm khô", "Nước mắm", "Đường", "Tiêu"],
+                steps: ["Luộc rau và củ", "Làm kho quẹt từ thịt, tôm khô", "Ăn kèm"],
+                suitable: ["normal", "maintain"], image_url: "img/rau-cu-kho-quet.jpg"
+            },
+            {
+                id: 53, name: "Canh mướp đắng nhồi thịt", emoji: "🍲🥒", category: "dinner",
+                calories: 320, protein: 22, carbs: 18, 
+                fat: 18, ingredients: ["Mướp đắng", "Thịt băm", "Mộc nhĩ", "Hành lá", "Gia vị"],
+                steps: ["Nhồi thịt vào mướp đắng", "Nấu canh đến khi mướp đắng mềm và thịt chín"],
+                suitable: ["normal", "lose-weight", "hypertension", "maintain"], image_url: "img/canh-muop-dang.jpg"
+            },
+            {
+                id: 54, name: "Trứng đúc thịt", emoji: "🍳🍖", category: "dinner",
+                calories: 350, protein: 28, carbs: 8, 
+                fat: 28, ingredients: ["Trứng gà", "Thịt băm", "Hành lá", "Nước mắm"],
+                steps: ["Trộn trứng với thịt băm, hành", "Đúc trứng trên chảo nóng"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/trung-duc-thit.jpg"
+            },
+            {
+                id: 55, name: "Nem lụi nướng", emoji: "🍢", category: "dinner",
+                calories: 450, protein: 28, carbs: 35, 
+                fat: 22, ingredients: ["Thịt heo xay", "Bì heo", "Sả", "Gia vị", "Rau sống", "Nước chấm"],
+                steps: ["Trộn thịt, bì, sả", "Xiên vào que sả, nướng", "Ăn kèm rau sống và nước chấm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/nem-lui.jpg"
+            },
+            {
+                id: 56, name: "Canh nấm rơm chay", emoji: "🍲🍄", category: "dinner",
+                calories: 180, protein: 7, carbs: 18, 
+                fat: 7, ingredients: ["Nấm rơm", "Đậu phụ non", "Hành lá", "Gia vị chay"],
+                steps: ["Phi hành, cho nấm vào xào sơ", "Thêm nước, đậu phụ, đun sôi", "Nêm nếm"],
+                suitable: ["vegetarian", "lose-weight", "normal", "hypertension", "maintain"], image_url: "img/canh-nam-chay.jpg"
+            },
+            {
+                id: 57, name: "Gỏi gà bắp cải", emoji: "🥗🍗", category: "dinner",
+                calories: 280, protein: 22, carbs: 22, 
+                fat: 12, ingredients: ["Thịt gà luộc", "Bắp cải", "Cà rốt", "Hành tây", "Nước mắm gỏi"],
+                steps: ["Xé gà, thái rau củ", "Trộn đều với nước mắm gỏi"],
+                suitable: ["lose-weight", "normal", "hypertension", "maintain"], image_url: "img/goi-ga-bap-cai.jpg"
+            },
+            {
+                id: 58, name: "Mực xào sả ớt", emoji: "🦑🌶️", category: "dinner",
+                calories: 350, protein: 28, carbs: 12, 
+                fat: 20, ingredients: ["Mực tươi", "Sả", "Ớt", "Tỏi", "Gia vị"],
+                steps: ["Sơ chế mực, thái miếng", "Phi sả ớt tỏi", "Cho mực vào xào nhanh tay", "Nêm nếm"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/muc-xao-xa.jpg"
+            },
+            {
+                id: 60, name: "Canh khổ qua nhồi đậu phụ", emoji: "🍲🥒", category: "dinner",
+                calories: 220, protein: 12, carbs: 18, 
+                fat: 12, ingredients: ["Khổ qua", "Đậu phụ nghiền", "Mộc nhĩ", "Hành lá", "Gia vị chay"],
+                steps: ["Nhồi đậu phụ vào khổ qua", "Nấu canh đến khi khổ qua mềm"],
+                suitable: ["vegetarian", "lose-weight", "normal", "hypertension", "maintain"], image_url: "img/canh-kho-qua-dau.jpg"
+            },
+            {
+                id: 61, name: "Cơm chiên rau củ chay", emoji: "🍚🥦🥕", category: "dinner",
+                calories: 450, protein: 18, carbs: 55, 
+                fat: 18, ingredients: ["Cơm nguội", "Đậu Hà Lan", "Ngô", "Cà rốt", "Đậu phụ", "Nước tương"],
+                steps: ["Xào rau củ và đậu phụ", "Cho cơm vào chiên, nêm nếm nước tương"],
+                suitable: ["vegetarian", "normal", "maintain"], image_url: "img/com-chien-chay.jpg"
+            },
+
+            // Snacks
+            {
+                id: 14, name: "Gỏi cuốn tôm thịt", emoji: "🥢", category: "snack",
+                calories: 180, protein: 18, carbs: 20, 
+                fat: 6, ingredients: ["Bánh tráng", "Tôm", "Thịt", "Bún", "Rau thơm"],
+                steps: ["Luộc tôm thịt", "Ướt bánh tráng", "Cho nhân", "Cuốn tròn", "Chấm nước mắm"],
+                suitable: ["weight-loss", "normal", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/goi-cuon-tom-thit.jpg"
+            },
+            {
+                id: 15, name: "Chè đậu xanh", emoji: "🍨", category: "snack",
+                calories: 220, protein: 10, carbs: 45, 
+                fat: 3, ingredients: ["Đậu xanh", "Nước cốt dừa", "Đường", "Muối", "Lá dứa"],
+                steps: ["Nấu đậu", "Xay nhuyễn", "Nấu với nước cốt dừa", "Nêm đường", "Để nguội"],
+                suitable: ["vegetarian", "normal", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/che-dau-xanh.jpg"
+            },
+            {
+                id: 62, name: "Trái cây tươi (ổi, dưa hấu, thanh long)", emoji: "🍉🍓", category: "snack",
+                calories: 100, protein: 1, carbs: 25, 
+                fat: 0, ingredients: ["Ổi", "Dưa hấu", "Thanh long"],
+                steps: ["Rửa sạch, thái miếng"],
+                suitable: ["lose-weight", "vegetarian", "normal", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/trai-cay-tuoi.jpg"
+            },
+            {
+                id: 63, name: "Sữa chua không đường", emoji: "🥛", category: "snack",
+                calories: 120, protein: 10, carbs: 15, 
+                fat: 1, ingredients: ["Sữa chua không đường"],
+                steps: ["Ăn trực tiếp"],
+                suitable: ["lose-weight", "vegetarian", "normal", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/sua-chua-khong-duong.jpg"
+            },
+            {
+                id: 64, name: "Hạt điều rang muối", emoji: "🌰", category: "snack",
+                calories: 200, protein: 7, carbs: 12, 
+                fat: 16, ingredients: ["Hạt điều", "Muối"],
+                steps: ["Rang hạt điều với muối"],
+                suitable: ["normal", "muscle", "maintain"], image_url: "img/dieu-rang-muoi.jpg"
+            },
+            {
+                id: 65, name: "Bánh chuối nướng", emoji: "🍌🍰", category: "snack",
+                calories: 280, protein: 5, carbs: 55, 
+                fat: 8, ingredients: ["Chuối", "Bột gạo", "Nước cốt dừa", "Đường"],
+                steps: ["Trộn chuối với bột và nước cốt dừa", "Nướng chín vàng"],
+                suitable: ["normal", "vegetarian", "maintain"], image_url: "img/banh-chuoi-nuong.jpg"
+            },
+            {
+                id: 66, name: "Nước dừa tươi", emoji: "🥥", category: "snack",
+                calories: 60, protein: 1, carbs: 15, 
+                fat: 0, ingredients: ["Nước dừa tươi"],
+                steps: ["Uống trực tiếp"],
+                suitable: ["normal", "lose-weight", "hypertension", "maintain"], image_url: "img/nuoc-dua.jpg"
+            },
+            {
+                id: 67, name: "Khoai tây luộc", emoji: "🥔", category: "snack",
+                calories: 120, protein: 2.5, carbs: 28, 
+                fat: 0.2, ingredients: ["Khoai tây"],
+                steps: ["Luộc khoai tây chín mềm"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/khoai-tay-luoc.jpg"
+            },
+            {
+                id: 68, name: "Thạch rau câu", emoji: "🍮", category: "snack",
+                calories: 100, protein: 0, carbs: 25, 
+                fat: 0, ingredients: ["Bột rau câu", "Đường", "Nước cốt dừa (tùy chọn)"],
+                steps: ["Nấu bột rau câu với nước, đường", "Đổ khuôn, để nguội"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/thach-rau-cau.jpg"
+            },
+            {
+                id: 69, name: "Chè bưởi", emoji: "🍧", category: "snack",
+                calories: 250, protein: 4, carbs: 55, 
+                fat: 3, ingredients: ["Cùi bưởi", "Đậu xanh", "Nước cốt dừa", "Đường"],
+                steps: ["Làm cùi bưởi giòn", "Nấu đậu xanh", "Trộn với nước cốt dừa và đường"],
+                suitable: ["normal", "vegetarian", "maintain"], image_url: "img/che-buoi.jpg"
+            },
+            {
+                id: 70, name: "Bỏng ngô ( ít đường)", emoji: "🍿", category: "snack",
+                calories: 150, protein: 4, carbs: 30, 
+                fat: 1.5, ingredients: ["Hạt ngô", "Ít đường"],
+                steps: ["Làm nóng dầu","Cho ngô","Đảo đều và đậy nắp","Cho đường vào và đảo"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/bong-ngo.jpg"
+            },
+            {
+                id: 71, name: "Bánh khoai mì nướng", emoji: "🍠🍰", category: "snack",
+                calories: 300, protein: 6, carbs: 60, 
+                fat: 6, ingredients: ["Khoai mì", "Nước cốt dừa", "Đường"],
+                steps: ["Xay khoai mì, trộn với nước cốt dừa, đường", "Nướng chín vàng"],
+                suitable: ["normal", "vegetarian", "maintain"], image_url: "img/banh-khoai-mi.jpg"
+            },
+            {
+                id: 72, name: "Trà Atiso", emoji: "☕", category: "snack",
+                calories: 10, protein: 0, carbs: 2, 
+                fat: 0, ingredients: ["Bông Atiso khô"],
+                steps: ["Hãm trà với nước sôi"],
+                suitable: ["lose-weight", "vegetarian", "normal", "diabetes", "hypertension", "gout", "heart", "maintain"], image_url: "img/tra-atiso.jpg"
+            },
+            {
+                id: 73, name: "Đậu phộng luộc", emoji: "🥜", category: "snack",
+                calories: 180, protein: 8, carbs: 12, 
+                fat: 12, ingredients: ["Đậu phộng tươi", "Muối"],
+                steps: ["Luộc đậu phộng với muối"],
+                suitable: ["normal", "lose-weight", "hypertension", "maintain"], image_url: "img/dau-phong-luoc.jpg"
+            },
+            {
+                id: 74, name: "Bánh đa mè", emoji: "🍘", category: "snack",
+                calories: 120, protein: 3, carbs: 25, 
+                fat: 3, ingredients: ["Bột gạo", "Mè rang"],
+                steps: ["Nướng bánh đa"],
+                suitable: ["normal", "vegetarian", "maintain"], image_url: "img/banh-da-me.jpg"
+            },
+            {
+                id: 75, name: "Sinh tố rau má", emoji: "🥤🌿", category: "snack",
+                calories: 80, protein: 2, carbs: 18, 
+                fat: 0, ingredients: ["Rau má", "Nước dừa tươi (tùy chọn)", "Đường (tùy chọn)"],
+                steps: ["Xay rau má với nước dừa/nước lọc"],
+                suitable: ["lose-weight", "vegetarian", "normal", "hypertension", "maintain"], image_url: "img/rau-ma.jpg"
+            }
+        ];
+        // Selected goal
+        let selectedGoal = '';
+
+        // Show screen function
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Login function
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                showScreen('menu-screen');
+                generatePersonalizedMenu(); // Gọi hàm tạo menu sau khi đăng nhập
+            } else {
+                alert('Vui lòng nhập đầy đủ email và mật khẩu!');
+            }
+        }
+
+        // Select goal function
+        function selectGoal(element, goal) {
+            document.querySelectorAll('.goal-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedGoal = goal;
+            userProfile.goal = goal;
+        }
+
+        // Save profile function
+        function saveProfile() {
+            userProfile = {
+                gender: document.getElementById('gender').value,
+                age: parseInt(document.getElementById('age').value) || 25,
+                height: parseInt(document.getElementById('height').value) || 170,
+                weight: parseInt(document.getElementById('weight').value) || 65,
+                healthCondition: document.getElementById('health-condition').value,
+                activityLevel: document.getElementById('activity-level').value,
+                goal: selectedGoal || 'maintain'
+            };
+
+            if (!userProfile.age || !userProfile.height || !userProfile.weight) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            showScreen('menu-screen');
+            generatePersonalizedMenu(); // Gọi hàm tạo menu sau khi lưu hồ sơ
+        }
+
+        // Calculate nutritional needs based on user profile
+        function calculateNutritionalNeeds() {
+            const { weight, height, age, gender, activityLevel, goal } = userProfile;
+            
+            // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
+            let bmr = 10 * weight + 6.25 * height - 5 * age + (gender === 'male' ? 5 : -161);
+
+            // Adjust for activity level
+            const activityMultipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                active: 1.725
+            };
+            
+            let calories = bmr * activityMultipliers[activityLevel];
+
+            // Adjust calories based on goal
+            if (goal === 'weight-loss') {
+                calories *= 0.85; // Reduce by 15% for weight loss
+            } else if (goal === 'muscle') {
+                calories *= 1.15; // Increase by 15% for muscle gain
+            } else if (goal === 'maintain' && userProfile.healthCondition === 'normal') {
+                // Aim for a typical maintenance calorie level for average adults
+                // This might be around 2000-2500 for moderate activity, adjusting based on BMR
+                // Example: If BMR is 1500, moderate activity is 1.55 * 1500 = 2325.
+                // We'll let the standard calculation handle it, but can add specific overrides if needed.
+            }
+
+
+            // Calculate macronutrients
+            // Standard values: Protein 4 cal/g, Carbs 4 cal/g, Fat 9 cal/g
+            // Set a target range for macros first, then derive carbs from remaining calories
+            let proteinTarget, fatTarget;
+
+            if (goal === 'muscle') {
+                proteinTarget = weight * 2.2; // Higher protein for muscle gain (e.g., 2.2g/kg)
+                fatTarget = weight * 0.9; // Moderate fat (e.g., 0.9g/kg)
+            } else if (goal === 'weight-loss') {
+                proteinTarget = weight * 1.8; // Moderate protein for satiety (e.g., 1.8g/kg)
+                fatTarget = weight * 0.7; // Lower fat (e.g., 0.7g/kg)
+            } else if (goal === 'vegetarian') {
+                proteinTarget = weight * 1.5; // Adjusted protein for vegetarian (e.g., 1.5g/kg)
+                fatTarget = weight * 0.8; // Standard fat
+            }
+            else { // maintain or normal health condition
+                proteinTarget = weight * 1.6; // General protein target (e.g., 1.6g/kg)
+                fatTarget = weight * 0.8; // General fat target (e.g., 0.8g/kg)
+            }
+            
+            // Convert protein and fat targets to calories
+            const proteinCalories = proteinTarget * 4;
+            const fatCalories = fatTarget * 9;
+
+            // Calculate remaining calories for carbs
+            const carbsCalories = calories - proteinCalories - fatCalories;
+            const carbsTarget = Math.max(0, carbsCalories / 4); // Ensure carbs are not negative
+
+            return {
+                calories: Math.round(calories),
+                protein: Math.round(proteinTarget),
+                carbs: Math.round(carbsTarget),
+                fat: Math.round(fatTarget)
+            };
+        }
+
+        // Generate personalized menu
+        function generatePersonalizedMenu() {
+            const nutritionalNeeds = calculateNutritionalNeeds();
+            
+            // Update profile summary
+            document.getElementById('profile-summary').innerHTML = `
+                <h3>Hồ sơ của bạn</h3>
+                <p><strong>Giới tính:</strong> ${userProfile.gender === 'male' ? 'Nam' : 'Nữ'}</p>
+                <p><strong>Tuổi:</strong> ${userProfile.age} tuổi</p>
+                <p><strong>Chiều cao:</strong> ${userProfile.height} cm</p>
+                <p><strong>Cân nặng:</strong> ${userProfile.weight} kg</p>
+                <p><strong>Tình trạng sức khỏe:</strong> ${{
+                    normal: 'Bình thường',
+                    hypertension: 'Cao huyết áp',
+                    diabetes: 'Tiểu đường',
+                    gout: 'Bệnh gout',
+                    heart: 'Bệnh tim'
+                }[userProfile.healthCondition]}</p>
+                <p><strong>Mức độ vận động:</strong> ${{
+                    sedentary: 'Ít vận động',
+                    light: 'Vận động nhẹ',
+                    moderate: 'Vận động vừa',
+                    active: 'Vận động nhiều'
+                }[userProfile.activityLevel]}</p>
+                <p><strong>Mục tiêu:</strong> ${{
+                    muscle: 'Tăng cơ',
+                    'weight-loss': 'Giảm cân',
+                    maintain: 'Giữ sức khỏe',
+                    vegetarian: 'Ăn chay'
+                }[userProfile.goal]}</p>
+            `;
+
+            // Update nutritional targets
+            document.getElementById('target-calories').textContent = nutritionalNeeds.calories;
+            document.getElementById('target-protein').textContent = nutritionalNeeds.protein;
+            document.getElementById('target-carbs').textContent = nutritionalNeeds.carbs;
+            document.getElementById('target-fat').textContent = nutritionalNeeds.fat;
+
+            // Generate meals for each category
+            ['breakfast', 'lunch', 'dinner', 'snack'].forEach(category => {
+                dailyMenu[category] = selectMeals(category);
+                renderMeals(category);
+            });
+
+            updateNutritionProgress();
+        }
+
+        // Select meals for a category
+        function selectMeals(category) {
+            const { goal, healthCondition } = userProfile;
+
+            let filteredByCategory = meals.filter(meal => meal.category === category);
+
+            let suitableMeals = [];
+
+            // Ưu tiên 1: Phù hợp với CẢ mục tiêu VÀ tình trạng sức khỏe
+            suitableMeals = filteredByCategory.filter(meal =>
+                meal.suitable.includes(goal) && meal.suitable.includes(healthCondition)
+            );
+
+            // Ưu tiên 2: Nếu không có món phù hợp hoàn hảo, ưu tiên món phù hợp với TÌNH TRẠNG SỨC KHỎE
+            // Hoặc nếu mục tiêu là 'maintain', ưu tiên các món 'normal'
+            if (suitableMeals.length === 0) {
+                suitableMeals = filteredByCategory.filter(meal =>
+                    (meal.suitable.includes(healthCondition) && healthCondition !== 'normal') ||
+                    (goal === 'maintain' && meal.suitable.includes('normal'))
+                );
+            }
+
+            // Ưu tiên 3: Nếu vẫn không có, ưu tiên món phù hợp với MỤC TIÊU
+            if (suitableMeals.length === 0) {
+                suitableMeals = filteredByCategory.filter(meal =>
+                    meal.suitable.includes(goal)
+                );
+            }
+
+            // Ưu tiên 4: Nếu vẫn không có, lấy các món được đánh dấu là "normal"
+            if (suitableMeals.length === 0) {
+                suitableMeals = filteredByCategory.filter(meal =>
+                    meal.suitable.includes('normal')
+                );
+            }
+
+            // Ưu tiên 5: Nếu vẫn không có, lấy bất kỳ món nào trong danh mục đó (fallback cuối cùng)
+            if (suitableMeals.length === 0) {
+                console.warn(`Không tìm thấy món ăn phù hợp với bất kỳ tiêu chí nào. Chọn ngẫu nhiên trong ${category}.`);
+                // Tạo một đối tượng meal_dummy nếu không có meal nào được tìm thấy
+                return [{
+                    id: -1, 
+                    name: "Không có món phù hợp", 
+                    category: category,
+                    calories: 0, 
+                    protein: 0, 
+                    carbs: 0, 
+                    fat: 0,
+                    ingredients: [], 
+                    steps: [], 
+                    suitable: [],
+                    image_url: "https://via.placeholder.com/300x200?text=No+Meal+Found" // Hình ảnh placeholder cho trường hợp không có món
+                }];
+            }
+
+            // Chọn một món ăn ngẫu nhiên từ danh sách đã lọc
+            const randomMeal = suitableMeals[Math.floor(Math.random() * suitableMeals.length)];
+            return [randomMeal];
+        }
+
+        // Hàm renderMeals được chỉnh sửa để chỉ hiển thị ảnh
+        function renderMeals(category) {
+            const mealsContainer = document.getElementById(`${category}-meals`);
+            mealsContainer.innerHTML = '';
+            dailyMenu[category].forEach(meal => {
+                // Luôn sử dụng image_url. Đảm bảo tất cả món ăn đều có image_url
+                const imageContent = meal.image_url 
+                    ? `<img src="${meal.image_url}" alt="${meal.name}">` 
+                    : '<img src="https://via.placeholder.com/300x200?text=No+Image" alt="No Image">'; // Fallback nếu không có URL ảnh
+
+                mealsContainer.innerHTML += `
+                    <div class="meal-card" onclick="showRecipe(${meal.id})">
+                        <div class="meal-image">${imageContent}</div>
+                        <div class="meal-info">
+                            <div class="meal-title">${meal.name}</div>
+                            <div class="nutrition-info">
+                                <div class="nutrition-item">
+                                    <div class="value">${meal.calories}</div>
+                                    <div class="label">Calo</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="value">${meal.protein}g</div>
+                                    <div class="label">Đạm</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="value">${meal.carbs}g</div>
+                                    <div class="label">Carbs</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="value">${meal.fat}g</div>
+                                    <div class="label">Chất béo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateNutritionProgress() {
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+
+            for (const category in dailyMenu) {
+                dailyMenu[category].forEach(meal => {
+                    totalCalories += meal.calories;
+                    totalProtein += meal.protein;
+                    totalCarbs += meal.carbs;
+                    totalFat += meal.fat;
+                });
+            }
+
+            const nutritionalNeeds = calculateNutritionalNeeds();
+
+            document.getElementById('total-calories').textContent = totalCalories;
+            document.getElementById('total-protein').textContent = totalProtein;
+            document.getElementById('total-carbs').textContent = totalCarbs;
+            document.getElementById('total-fat').textContent = totalFat;
+
+            // Update progress bars
+            document.getElementById('calories-progress').style.width = `${Math.min(100, (totalCalories / nutritionalNeeds.calories) * 100)}%`;
+            document.getElementById('protein-progress').style.width = `${Math.min(100, (totalProtein / nutritionalNeeds.protein) * 100)}%`;
+            document.getElementById('carbs-progress').style.width = `${Math.min(100, (totalCarbs / nutritionalNeeds.carbs) * 100)}%`;
+            document.getElementById('fat-progress').style.width = `${Math.min(100, (totalFat / nutritionalNeeds.fat) * 100)}%`;
+        }
+
+
+        // Swap meal function
+        function swapMeal(category) {
+            dailyMenu[category] = selectMeals(category); // Chọn lại món cho bữa ăn
+            renderMeals(category); // Render lại giao diện cho bữa ăn đó
+            updateNutritionProgress(); // Cập nhật lại tổng dinh dưỡng
+        }
+
+        // Show recipe modal
+        function showRecipe(mealId) {
+            const meal = meals.find(m => m.id === mealId);
+            if (!meal || meal.id === -1) { // Thêm điều kiện kiểm tra meal_dummy
+                alert("Không có thông tin chi tiết cho món này.");
+                return;
+            }
+
+            // Loại bỏ emoji khỏi tiêu đề modal, chỉ hiển thị tên món ăn
+            document.getElementById('recipe-details').innerHTML = `
+                <h2>${meal.name}</h2>
+                ${meal.image_url ? `<img src="${meal.image_url}" alt="${meal.name}" style="width:100%; height:auto; border-radius: 8px; margin-bottom: 15px;">` : ''}
+                <h3>Nguyên liệu:</h3>
+                <ul class="ingredients-list">
+                    ${meal.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                </ul>
+                <h3>Cách làm:</h3>
+                <ol class="steps-list">
+                    ${meal.steps.map(step => `<li>${step}</li>`).join('')}
+                </ol>
+                <div class="nutrition-info">
+                    <div class="nutrition-item">
+                        <div class="value">${meal.calories}</div>
+                        <div class="label">Calories</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="value">${meal.protein}g</div>
+                        <div class="label">Protein</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="value">${meal.carbs}g</div>
+                        <div class="label">Carbs</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="value">${meal.fat}g</div>
+                        <div class="label">Chất béo</div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('recipe-modal').style.display = 'block';
+        }
+
+        // Close recipe modal
+        function closeRecipe() {
+            document.getElementById('recipe-modal').style.display = 'none';
+        }
+
+        // Initialize (gọi khi trang được tải lần đầu)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Đảm bảo các giá trị trong form được cập nhật vào userProfile trước khi generate menu lần đầu
+            userProfile.gender = document.getElementById('gender').value;
+            userProfile.age = parseInt(document.getElementById('age').value) || 25;
+            userProfile.height = parseInt(document.getElementById('height').value) || 170;
+            userProfile.weight = parseInt(document.getElementById('weight').value) || 65;
+            userProfile.healthCondition = document.getElementById('health-condition').value;
+            userProfile.activityLevel = document.getElementById('activity-level').value;
+            // goal sẽ được cập nhật khi người dùng chọn hoặc giữ mặc định 'maintain'
+
+            generatePersonalizedMenu();
+        });
+    </script>
+</body>
+</html>
